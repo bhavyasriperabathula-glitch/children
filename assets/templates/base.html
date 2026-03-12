@@ -1,0 +1,25 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attention Deficit Hyperactivity Disorder</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+<nav class="navbar">
+    <div class="logo"><a href="#"><b>Attention Deficit Hyperactivity Disorder</b></a></div>
+    <div>
+        <a href="{% url 'index' %}">Home</a>
+        <a href="{% url 'UserLogin' %}">User</a>
+        <a href="{% url 'AdminLogin' %}">Admin</a>
+        <a href="{% url 'UserRegister' %}">Register</a>
+
+    </div>
+</nav>
+
+{% block content %}
+{% endblock %}
+</body>
+</html>

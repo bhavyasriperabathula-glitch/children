@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    /* Full page ADHD Brain background */
+
+    body {
+        background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSI4s32OhLL5AySgSqWKxXGjeyGWfP_I-PzwQ&s");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+
+    /* Outer container */
+
+    .container {
+        width: 75%;
+        margin-top: 60px;
+        padding: 40px;
+        background: rgba(0, 0, 0, 0.55);
+        border-radius: 15px;
+        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    /* Form background image */
+
+    .container form {
+        background-image: url("{% static 'images/ADHD_image.jpeg' %}");
+        background-size: cover;
+        background-position: center;
+        padding: 35px;
+        border-radius: 12px;
+    }
+
+    /* Heading */
+
+    h2 {
+        color: white;
+    }
+
+    /* Labels */
+
+    label {
+        color: white;
+        font-weight: bold;
+    }
+
+    /* Inputs */
+
+    input,
+    textarea,
+    select {
+        width: 100%;
+        padding: 8px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+
+    /* Buttons */
+
+    .btn-success {
+        padding: 8px 20px;
+    }
+
+    .btn-outline-dark {
+        padding: 8px 20px;
+        background: white;
+    }
+
+    /* Messages */
+
+    .text-success {
+        color: #00ff9d !important;
+        font-weight: bold;
+    }
+</style>
+
+<div class="container">
+
+    <center>
+
+        <form action="{% url 'UserRegisterActions' %}" method="POST">
+
+            {% csrf_token %}
+
+            <h2 align="center"><strong>User Sign up</strong></h2>
+
+            <div class="form-row">
+
+                <div class="form-group col-md-4">
+                    <label>User Name</label>
+                    {{ form.name }}
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label>Login Id</label>
+                    {{ form.loginid }}
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label>Email</label>
+                    {{ form.email }}
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label>Mobile</label>
+                    {{ form.mobile }}
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label>Password</label>
+                    {{ form.password }}
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label>Locality</label>
+                    {{ form.locality }}
+                </div>
+
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-group col-md-4">
+                    <label>City</label>
+                    {{ form.city }}
+                </div>
+
+                <div class="form-group col-md-4"></div>
+
+                <div class="form-group col-md-4">
+                    <label>State</label>
+                    {{ form.state }}
+                </div>
+
+                <div class="form-group col-md-3">
+                    {{ form.status }}
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label>Address</label>
+                    {{ form.address }}
+                </div>
+
+            </div>
+
+            <br>
+
+            <button type="submit" class="btn btn-success text-white">Sign up</button>
+            <button type="reset" class="btn btn-outline-dark">Reset</button>
+
+            {% if messages %}
+            {% for message in messages %}
+            <p align="center" class="text-success">{{ message }}</p>
+            {% endfor %}
+            {% endif %}
+
+        </form>
+
+    </center>
+
+</div>
+
+{% endblock %}

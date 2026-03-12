@@ -1,0 +1,48 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    .home-bg {
+        background: url("{% static 'img/ADHD-5.jpeg' %}") no-repeat center center;
+        /* paste here */
+        background-size: cover;
+        min-height: 100vh;
+        padding: 80px;
+    }
+
+    .home-box {
+        background: rgba(0, 0, 0, 0.65);
+        padding: 40px;
+        border-radius: 15px;
+        color: white;
+        width: 75%;
+        margin: auto;
+    }
+</style>
+
+<div class="home-bg">
+
+    <div class="home-box">
+
+        <h1>Attention Deficit Hyperactivity Disorder</h1>
+
+        <p>
+            Attention deficit hyperactivity disorder is a neurodevelopmental disorder characterized by symptoms of
+            inattention, hyperactivity, impulsivity, and emotional dysregulation.
+        </p>
+
+        <p>
+            According to studies, the prevalence of symptomatic adult ADHD was about 6.76% globally.
+        </p>
+
+        <p>
+            The exact cause of ADHD is unknown, but genetics and brain structure may play an important role.
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

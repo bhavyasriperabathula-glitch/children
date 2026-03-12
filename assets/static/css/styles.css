@@ -1,0 +1,54 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family: Arial, sans-serif;
+    background-image: url("../img/ADHD-5.jpeg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height:100vh;
+    color:#333;
+    line-height:1.6;
+}
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background-color:#333;
+    padding:2rem;
+    position:sticky;
+    top:0;
+    width:100%;
+}
+
+.navbar a{
+    color:white;
+    text-decoration:none;
+    padding:0.75rem 1rem;
+}
+
+.navbar a:hover{
+    text-decoration:underline;
+}
+
+.container{
+    max-width:900px;
+    margin:80px auto;
+    background: rgba(0,0,0,0.6);
+    color:white;
+    padding:40px;
+    border-radius:10px;
+}
+
+h1{
+    margin-bottom:20px;
+}
+
+p{
+    margin-bottom:15px;
+}

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    /* Full page background */
+
+    .page-bg {
+        background-image: url("{% static 'img/ADHD-2.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh;
+        width: 100%;
+        padding-top: 120px;
+    }
+
+    /* Login container */
+
+    .container {
+        width: 40%;
+        margin: auto;
+        padding: 40px;
+        background: rgba(0, 0, 0, 0.6);
+        border-radius: 15px;
+        color: white;
+    }
+
+    h1 {
+        color: white;
+    }
+</style>
+
+<div class="page-bg">
+
+    <div class="container">
+
+        <center>
+
+            <h1>Admin Login</h1>
+
+            <form action="{% url 'AdminLoginCheck' %}" method="POST">
+
+                {% csrf_token %}
+
+                <input type="text" class="form-control" name="loginid" placeholder="Enter Login Id" required>
+                <br>
+
+                <input type="password" class="form-control" name="pswd" placeholder="Enter Password" required>
+                <br>
+
+                <input type="submit" class="btn btn-success">
+                <input type="reset" class="btn btn-outline-light">
+
+                {% if messages %}
+                {% for message in messages %}
+                <p style="color:white">{{ message }}</p>
+                {% endfor %}
+                {% endif %}
+
+            </form>
+
+        </center>
+
+    </div>
+
+</div>
+
+{% endblock %}

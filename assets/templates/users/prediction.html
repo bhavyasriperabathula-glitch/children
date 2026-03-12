@@ -1,0 +1,19 @@
+{% extends 'users/userbase.html' %}
+{% block content %}
+<div class="container">
+    <h1>ADHD</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="image">Upload an Image:</label>
+        <input type="file" id="image" name="image" accept="image/*" required>
+        <br>
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if predicted_class %}
+    <div class="result">
+        <h2>Prediction:<font style="color:GREEN"> {{ predicted_class }}</font></h2>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
