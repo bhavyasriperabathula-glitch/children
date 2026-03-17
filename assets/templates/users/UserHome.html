@@ -1,0 +1,31 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h1>ADHD Insight</h1>
+    
+    <div style="margin-top: 2rem;">
+        <p>
+            <i class="fas fa-info-circle" style="color: var(--primary-color); margin-right: 8px;"></i>
+            <strong>Attention deficit hyperactivity disorder</strong> is a neurodevelopmental disorder characterized by symptoms of inattention, hyperactivity, impulsivity, and emotional dysregulation.
+        </p>
+
+        <p>
+            <i class="fas fa-globe" style="color: var(--primary-color); margin-right: 8px;"></i>
+            According to studies, the prevalence of symptomatic adult ADHD was about 6.76% globally.
+        </p>
+
+        <p>
+            <i class="fas fa-brain" style="color: var(--primary-color); margin-right: 8px;"></i>
+            The exact cause of ADHD is unknown, but genetics and brain structure may play an important role.
+        </p>
+    </div>
+
+    <div style="margin-top: 3rem; text-align: center;">
+        <a href="{% url 'prediction' %}" style="text-decoration: none;">
+            <button><i class="fas fa-arrow-right"></i> Start Prediction</button>
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'users/userbase.html' %}
+{% block content %}
+<div class="container" style="text-align: center;">
+    <h1><i class="fas fa-chart-line"></i> Training Results</h1>
+    
+    <div style="display: flex; justify-content: space-around; margin-top: 30px; flex-wrap: wrap; gap: 20px;">
+        <div style="background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); padding: 30px; border-radius: 12px; min-width: 250px;">
+            <i class="fas fa-bullseye" style="font-size: 2rem; color: #4ade80; margin-bottom: 15px;"></i>
+            <h3>Training Accuracy</h3>
+            <p style="font-size: 1.5rem; font-weight: bold; color: white; margin-top: 10px;">{{ accuracy }}</p>
+        </div>
+        
+        <div style="background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); padding: 30px; border-radius: 12px; min-width: 250px;">
+            <i class="fas fa-check-circle" style="font-size: 2rem; color: #38bdf8; margin-bottom: 15px;"></i>
+            <h3>Validation Accuracy</h3>
+            <p style="font-size: 1.5rem; font-weight: bold; color: white; margin-top: 10px;">{{ val_accuracy }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

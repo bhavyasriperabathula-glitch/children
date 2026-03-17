@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADHD Insight | Prediction System</title>
+    <!-- Modern Font and Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+<nav class="navbar">
+    <div class="logo"><a href="#"><i class="fas fa-brain"></i> ADHD Insight</a></div>
+    <div>
+        <a href="{% url 'UserHome' %}"><i class="fas fa-home"></i> Home</a>
+        <a href="{% url 'training' %}"><i class="fas fa-dumbbell"></i> Training</a>
+        <a href="{% url 'prediction' %}"><i class="fas fa-stethoscope"></i> Prediction</a>
+        <a href="{% url 'index' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+</nav>
+
+{% block content %}
+{% endblock %}
+</body>
+</html>

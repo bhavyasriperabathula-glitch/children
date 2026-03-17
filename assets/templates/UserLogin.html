@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    /* Background section */
+
+    .page-bg {
+        background-image: url("{% static 'img/ADHD-3.jpeg' %}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh;
+        padding-top: 120px;
+    }
+
+    /* Login container */
+
+    .container {
+        width: 40%;
+        margin: auto;
+        padding: 40px;
+        background: rgba(0, 0, 0, 0.6);
+        border-radius: 15px;
+        color: white;
+    }
+
+    h1 {
+        color: white;
+    }
+</style>
+
+<div class="page-bg">
+
+    <div class="container">
+
+        <center>
+
+            <h1>User Login</h1>
+
+            <form action="{% url 'UserLoginCheck' %}" method="POST">
+
+                {% csrf_token %}
+
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <input type="text" class="form-control" name="loginid" required placeholder="Enter Login Id">
+                    </div>
+                </div>
+
+                <br>
+
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <input type="password" class="form-control" name="pswd" required placeholder="Enter Password">
+                    </div>
+                </div>
+
+                <br>
+
+                <input type="submit" class="btn btn-success">
+                <input type="reset" class="btn btn-outline-light">
+
+                <!-- Messages -->
+
+                {% if messages %}
+                {% for message in messages %}
+                <p style="color:white">{{ message }}</p>
+                {% endfor %}
+                {% endif %}
+
+            </form>
+
+        </center>
+
+    </div>
+
+</div>
+
+{% endblock %}
