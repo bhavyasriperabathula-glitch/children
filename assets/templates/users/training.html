@@ -1,5 +1,6 @@
 {% extends 'users/userbase.html' %}
 {% block content %}
+<<<<<<< HEAD
 <div class="container" style="text-align: center;">
     <h1><i class="fas fa-chart-line"></i> Training Results</h1>
     
@@ -16,5 +17,13 @@
             <p style="font-size: 1.5rem; font-weight: bold; color: white; margin-top: 10px;">{{ val_accuracy }}</p>
         </div>
     </div>
+=======
+<div class="container">
+    <center>
+        <h1>Training Results</h1>
+        <p><strong>Training Accuracy:</strong> {{ accuracy }}</p>
+        <p><strong>Validation Accuracy:</strong> {{ val_accuracy }}</p>
+    </center>
+>>>>>>> 0d569b43254f75e96b4b4a34f497cb868811c2ec
 </div>
 {% endblock %}

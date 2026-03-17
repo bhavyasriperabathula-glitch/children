@@ -283,6 +283,9 @@ def prediction(request):
         else:
             context['predicted_class'] = "Typically Developing Child"
 
+<<<<<<< HEAD
         context['image_url'] = f"/media/{image_file.name}"
 
+=======
+>>>>>>> 0d569b43254f75e96b4b4a34f497cb868811c2ec
     return render(request, 'users/prediction.html', context)
