@@ -17,7 +17,8 @@ from tensorflow.keras.callbacks import EarlyStopping
 from django.contrib import messages
 from .forms import UserRegistrationForm
 from .models import UserRegistrationModel
-
+from scipy.stats import entropy
+import math
 
 IMG_SIZE = 48
 
@@ -222,6 +223,36 @@ def training(request):
     })
 
 
+# ---------------- FEATURE EXTRACTION ----------------
+
+def extract_features(image_path):
+    img = cv2.imread(image_path)
+    if img is None:
+        return None
+    
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    
+    # Statistical features
+    mean_val = np.mean(gray)
+    std_val = np.std(gray)
+    var_val = np.var(gray)
+    
+    # Entropy calculation
+    # Flatten the image and calculate histogram
+    hist = cv2.calcHist([gray], [0], None, [256], [0, 256])
+    hist_norm = hist.ravel() / hist.sum()
+    ent_val = entropy(hist_norm, base=2)
+    
+    features = {
+        'Mean Intensity': round(float(mean_val), 4),
+        'Standard Deviation': round(float(std_val), 4),
+        'Variance': round(float(var_val), 4),
+        'Entropy (Shannon)': round(float(ent_val), 4),
+    }
+    
+    return features
+
+
 # ---------------- PREDICTION WITH OOD DETECTION ----------------
 
 def prediction(request):
@@ -264,10 +295,13 @@ def prediction(request):
 
         color_difference = (rg_diff + rb_diff + gb_diff) / 3
 
-        # MRI images are nearly grayscale (very small color difference)
-        if color_difference > 15:
-            context['predicted_class'] = "This is NOT a Brain MRI Image. Please upload a Brain MRI image."
-            return render(request, 'users/prediction.html', context)
+        # Relaxed check: allow colorful images if they are spectrograms (common in EEG)
+        # We only warn instead of blocking, or just skip if it's likely a real image
+        is_mri = color_difference <= 15
+        
+        # ---------- FEATURE EXTRACTION ----------
+        features = extract_features(image_path)
+        # context['features'] = features
 
         # ---------- ADHD PREDICTION ----------
 
@@ -283,9 +317,77 @@ def prediction(request):
         else:
             context['predicted_class'] = "Typically Developing Child"
 
-<<<<<<< HEAD
-        context['image_url'] = f"/media/{image_file.name}"
+        if not is_mri:
+            context['warning'] = "Note: This image appears to be a color EEG spectrogram rather than a grayscale MRI, but it has been processed normally."
 
-=======
->>>>>>> 0d569b43254f75e96b4b4a34f497cb868811c2ec
+        context['image_url'] = f"/media/{image_file.name}"
     return render(request, 'users/prediction.html', context)
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def upload_file(request):
+    if request.method == 'POST':
+        file = request.FILES.get('file')
+
+        if not file:
+            return JsonResponse({"error": "No file found"})
+
+        # Create media folder if not exists
+        os.makedirs(settings.MEDIA_ROOT, exist_ok=True)
+
+        file_path = os.path.join(settings.MEDIA_ROOT, file.name)
+
+        # Save file
+        with open(file_path, 'wb+') as destination:
+            for chunk in file.chunks():
+                destination.write(chunk)
+
+        return JsonResponse({
+            "message": "File uploaded successfully",
+            "filename": file.name
+        })
+
+    return JsonResponse({"error": "Invalid request"})
+
+@csrf_exempt
+def predict_api(request):
+    if request.method == 'GET':
+        filename = request.GET.get('filename')
+        import glob
+        os.makedirs(settings.MEDIA_ROOT, exist_ok=True)
+        
+        if filename:
+            image_path = os.path.join(settings.MEDIA_ROOT, filename)
+            if not os.path.exists(image_path):
+                files = glob.glob(os.path.join(settings.MEDIA_ROOT, f"*{filename}*"))
+                if files:
+                    image_path = files[0]
+                else:
+                    return JsonResponse({"error": f"File {filename} not found", "prediction": "Error"})
+        else:
+            files = glob.glob(os.path.join(settings.MEDIA_ROOT, '*'))
+            image_files = [f for f in files if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
+            if not image_files:
+                return JsonResponse({"error": "No image found", "prediction": "No Image"})
+            image_path = max(image_files, key=os.path.getctime)
+        
+        model_path = os.path.join(settings.MEDIA_ROOT, "adhd_model.h5")
+        if not os.path.exists(model_path):
+            return JsonResponse({"error": "Model missing", "prediction": "Model Missing"})
+            
+        try:
+            from tensorflow.keras.models import load_model
+            model = load_model(model_path)
+            img = load_img(image_path, target_size=(48, 48))
+            img = img_to_array(img) / 255.0
+            img = apply_thresholding(img)
+            img = np.expand_dims(img, axis=0)
+            pred = model.predict(img)[0][0]
+            result = "ADHD-Hyperactive" if pred < 0.5 else "Typically Developing Child"
+            return JsonResponse({"prediction": result, "filename": os.path.basename(image_path)})
+        except Exception as e:
+            return JsonResponse({"error": str(e), "prediction": "Error"})
+    
+    return JsonResponse({"error": "Invalid request"})

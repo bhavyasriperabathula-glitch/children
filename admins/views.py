@@ -35,4 +35,21 @@ def AdminActivaUsers(request):
 
 
 def AdminHome(request):
-    return render(request, 'admins/AdminHome.html') 
+    return render(request, 'admins/AdminHome.html')
+    from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def upload_file(request):
+    if request.method == 'POST':
+        file = request.FILES.get('file')
+
+        if file:
+            # Save file
+            with open('media/' + file.name, 'wb+') as destination:
+                for chunk in file.chunks():
+                    destination.write(chunk)
+
+            return JsonResponse({"message": "File uploaded successfully"})
+        
+        return JsonResponse({"error": "No file found"}) 

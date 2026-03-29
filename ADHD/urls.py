@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from admins import views as admins
-from django.urls import path
+from django.urls import path, include
 from users import views as usr
 from . import views as mainView
+from .views import predict
 
 
 urlpatterns = [ 
@@ -41,13 +42,12 @@ urlpatterns = [
     path("AdminHome/", admins.AdminHome, name="AdminHome"),
     path("ViewRegisteredUsers/", admins.ViewRegisteredUsers, name="ViewRegisteredUsers"),
     path("AdminActivaUsers/", admins.AdminActivaUsers, name="AdminActivaUsers"),
+    path("predict/", predict, name="predict"),
+    path('', include('users.urls')),
 ]
 
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-<<<<<<< HEAD
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-=======
->>>>>>> 0d569b43254f75e96b4b4a34f497cb868811c2ec
+urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

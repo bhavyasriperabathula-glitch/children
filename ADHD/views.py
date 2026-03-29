@@ -1,6 +1,7 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 from users.forms import UserRegistrationForm
-
+import random
 
 # Create your views here.
 def index(request):
@@ -18,3 +19,10 @@ def UserRegister(request):
 
 def AdminLogin(request):
     return render(request, 'AdminLogin.html', {})
+
+def home(request):
+    return JsonResponse({"message": "Server is running"})
+    
+def predict(request):
+    result = random.choice(["ADHD", "Normal"])
+    return JsonResponse({"prediction": result})  
