@@ -9,3 +9,4 @@ whitenoise
 scikit-learn
 matplotlib
 scipy
+opencv-python-headless
