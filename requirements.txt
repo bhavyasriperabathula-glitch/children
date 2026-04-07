@@ -1,8 +1,7 @@
-
+setuptools>=68
+wheel
 pip>=23.0
-setuptools>=68.0.0
-wheel>=0.40.0
-numpy==1.23.5
+numpy>=1.26.0
 pandas==1.5.3
 fastapi
 uvicorn
