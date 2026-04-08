@@ -1,4 +1,4 @@
-```python
+
 from django.shortcuts import render
 from django.contrib import messages
 from django.http import JsonResponse
@@ -70,4 +70,4 @@ def upload_file(request):
         return JsonResponse({"error": "No file found"})
 
     return JsonResponse({"error": "Invalid request method"})
-```
+
