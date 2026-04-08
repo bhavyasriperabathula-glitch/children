@@ -1,6 +1,5 @@
 import os
 import numpy as np
-import cv2
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -390,4 +389,4 @@ def predict_api(request):
         except Exception as e:
             return JsonResponse({"error": str(e), "prediction": "Error"})
     
-    return JsonResponse({"error": "Invalid request"})
+    return JsonResponse({"error": "Invalid request"})
