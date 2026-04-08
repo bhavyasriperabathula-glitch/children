@@ -1,55 +1,73 @@
+```python
 from django.shortcuts import render
 from django.contrib import messages
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from users.models import UserRegistrationModel
 
 
-# Create your views here.
-
+# -------------------- ADMIN LOGIN --------------------
 def AdminLoginCheck(request):
     if request.method == 'POST':
         usrid = request.POST.get('loginid')
         pswd = request.POST.get('pswd')
-        print("User ID is = ", usrid)
+
+        print("User ID is =", usrid)
+
         if usrid == 'admin' and pswd == 'admin':
             return render(request, 'admins/AdminHome.html')
         elif usrid == 'Admin' and pswd == 'Admin':
             return render(request, 'admins/AdminHome.html')
         else:
             messages.success(request, 'Please Check Your Login Details')
-    return render(request, 'AdminLogin.html', {})
+
+    return render(request, 'AdminLogin.html')
 
 
+# -------------------- VIEW USERS --------------------
 def ViewRegisteredUsers(request):
     data = UserRegistrationModel.objects.all()
     return render(request, 'admins/RegisteredUsers.html', {'data': data})
 
 
+# -------------------- ACTIVATE USER --------------------
 def AdminActivaUsers(request):
     if request.method == 'GET':
-        id = request.GET.get('uid')
+        uid = request.GET.get('uid')
         status = 'activated'
-        print("PID = ", id, status)
-        UserRegistrationModel.objects.filter(id=id).update(status=status)
-        data = UserRegistrationModel.objects.all()
-        return render(request, 'admins/RegisteredUsers.html', {'data': data})
+
+        print("User ID =", uid, "Status =", status)
+
+        UserRegistrationModel.objects.filter(id=uid).update(status=status)
+
+    data = UserRegistrationModel.objects.all()
+    return render(request, 'admins/RegisteredUsers.html', {'data': data})
 
 
+# -------------------- ADMIN HOME --------------------
 def AdminHome(request):
     return render(request, 'admins/AdminHome.html')
-    from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 
+
+# -------------------- FILE UPLOAD --------------------
 @csrf_exempt
 def upload_file(request):
     if request.method == 'POST':
         file = request.FILES.get('file')
 
         if file:
-            # Save file
-            with open('media/' + file.name, 'wb+') as destination:
+            file_path = 'media/' + file.name
+
+            with open(file_path, 'wb+') as destination:
                 for chunk in file.chunks():
                     destination.write(chunk)
 
-            return JsonResponse({"message": "File uploaded successfully"})
-        
-        return JsonResponse({"error": "No file found"}) 
+            return JsonResponse({
+                "message": "File uploaded successfully",
+                "filename": file.name
+            })
+
+        return JsonResponse({"error": "No file found"})
+
+    return JsonResponse({"error": "Invalid request method"})
+```
