@@ -9,20 +9,21 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+```python
 import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY
+# -------------------- SECURITY --------------------
 SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-secret-key')
 
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']  # or ['your-app-name.onrender.com']
+ALLOWED_HOSTS = ['*']
 
 
-# APPLICATIONS
+# -------------------- APPLICATIONS --------------------
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -36,10 +37,11 @@ INSTALLED_APPS = [
 ]
 
 
-# MIDDLEWARE (added WhiteNoise)
+# -------------------- MIDDLEWARE --------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # ✅ added
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -52,11 +54,14 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'ADHD.urls'
 
 
-# TEMPLATES
+# -------------------- TEMPLATES --------------------
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'assets/templates')],
+
+        # ✅ FIXED PATH
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -73,7 +78,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ADHD.wsgi.application'
 
 
-# DATABASE (SQLite OK for now)
+# -------------------- DATABASE --------------------
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -82,7 +87,7 @@ DATABASES = {
 }
 
 
-# PASSWORD VALIDATION
+# -------------------- PASSWORD VALIDATION --------------------
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -91,26 +96,27 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# INTERNATIONALIZATION
+# -------------------- INTERNATIONAL --------------------
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
 
-# STATIC FILES (IMPORTANT FIX)
+# -------------------- STATIC FILES --------------------
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # ✅ required for Render
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'assets/static'),
+    os.path.join(BASE_DIR, 'static'),   # simpler path
 ]
 
 
-# MEDIA FILES
+# -------------------- MEDIA FILES --------------------
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-# DEFAULT FIELD
+# -------------------- DEFAULT FIELD --------------------
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+```
