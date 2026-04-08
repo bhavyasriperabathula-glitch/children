@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-import seaborn as sns
 from tqdm import tqdm
 from sklearn.metrics import confusion_matrix
 from django.conf import settings
