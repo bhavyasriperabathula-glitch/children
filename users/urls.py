@@ -1,11 +1,12 @@
+```python
 from django.urls import path
-from .views import upload_file, UserHome, predict_api
+from . import views
 
-# urlpatterns = [
-#     path('upload/', upload_file),
-# ]
 urlpatterns = [
-    path('', UserHome),          
-    path('upload/', upload_file),
-    path('predict/', predict_api),
+    path('', views.AdminLoginCheck, name='home'),   # homepage
+    path('admin-home/', views.AdminHome, name='admin_home'),
+    path('view-users/', views.ViewRegisteredUsers, name='view_users'),
+    path('activate-user/', views.AdminActivaUsers, name='activate_user'),
+    path('upload/', views.upload_file, name='upload_file'),
 ]
+```
