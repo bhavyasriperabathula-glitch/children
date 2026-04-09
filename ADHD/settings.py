@@ -39,6 +39,8 @@ INSTALLED_APPS = [
 # -------------------- MIDDLEWARE --------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+
+    # ✅ WhiteNoise (must be just below SecurityMiddleware)
     'whitenoise.middleware.WhiteNoiseMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -58,7 +60,6 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
 
-        # ✅ FIXED PATH
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
 
         'APP_DIRS': True,
@@ -104,11 +105,15 @@ USE_TZ = True
 
 # -------------------- STATIC FILES --------------------
 STATIC_URL = '/static/'
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),   # simpler path
+    os.path.join(BASE_DIR, 'static'),
 ]
+
+# ✅ WhiteNoise storage (IMPORTANT)
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 # -------------------- MEDIA FILES --------------------
