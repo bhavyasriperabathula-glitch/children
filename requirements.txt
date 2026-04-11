@@ -1,9 +1,9 @@
 django==4.2
 gunicorn
-numpy
+numpy<2.0.0
 pillow
 whitenoise
 django-cors-headers
 
-# ML (ONLY IF NEEDED)
-tensorflow==2.15.0
+# ML (OPTIMIZED FOR RENDER LINUX)
+tensorflow==2.15.0.post1
