@@ -15,12 +15,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic.base import RedirectView
+from django.conf import settings
 from admins import views as admins
 from users import views as usr
 from . import views as mainView
 from .views import predict
 
+from django.conf.urls.static import static
+from django.conf import settings
+
 urlpatterns = [
+    # ✅ Favicon
+    path('favicon.ico', RedirectView.as_view(url=settings.STATIC_URL + 'favicon.ico')),
+
     # ✅ Admin
     path('admin/', admin.site.urls),
 
@@ -48,7 +56,7 @@ urlpatterns = [
 
     # ✅ ML Prediction
     path('predict/', predict, name='predict'),
-
-    # ✅ Optional: include app urls (SAFE route)
-    path('users/', include('users.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

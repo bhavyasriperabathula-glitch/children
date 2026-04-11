@@ -1,24 +1,36 @@
-{%load static%}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Attention Deficit Hyperactivity Disorder</title>
-  <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <title>Attention Deficit Hyperactivity Disorder | EEG Diagnosis</title>
+    <!-- Modern Fonts & Icons -->
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
 </head>
 <body>
 <nav class="navbar">
-    <div class="logo"><a href="#"><b>Attention Deficit Hyperactivity Disorder</b></a></div>
+    <div class="logo">
+        <a href="{% url 'index' %}">
+            <i class="fas fa-brain"></i> <b>ADHD Diagnosis</b>
+        </a>
+    </div>
     <div>
-        <a href="{% url 'index' %}">Home</a>
-        <a href="{% url 'UserLogin' %}">User</a>
-        <a href="{% url 'AdminLogin' %}">Admin</a>
-        <a href="{% url 'UserRegister' %}">Register</a>
-
+        <a href="{% url 'index' %}"><i class="fas fa-home"></i> Home</a>
+        <a href="{% url 'UserLogin' %}"><i class="fas fa-user"></i> User Login</a>
+        <a href="{% url 'AdminLogin' %}"><i class="fas fa-user-shield"></i> Admin Login</a>
+        <a href="{% url 'UserRegister' %}"><i class="fas fa-user-plus"></i> Register</a>
     </div>
 </nav>
 
 {% block content %}
 {% endblock %}
+
+<footer style="text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.9rem;">
+    &copy; 2026 Machine Learning Approach for ADHD Diagnosis
+</footer>
+
 </body>
+</html>

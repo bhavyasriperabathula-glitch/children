@@ -1,15 +1,9 @@
-django
+django==4.2
 gunicorn
-onnxruntime
 numpy
 pillow
-pandas
-django-cors-headers
 whitenoise
-scikit-learn
-matplotlib
-scipy
-opencv-python-headless
-seaborn
-tqdm
-tensorflow.keras
+django-cors-headers
+
+# ML (ONLY IF NEEDED)
+tensorflow==2.15.0

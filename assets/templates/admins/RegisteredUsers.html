@@ -1,48 +1,56 @@
 {% extends 'admins/adminbase.html' %}
 
 {% block content %}
-
-
-<div class="container">
-    <center>
-        <h1>Acute Lymphoblastic Leukemia Classification Based on Convolutional Neural Network</h1>
-        <h2>View Registration Users and Activate</h2>
-        <table border="2px">
+<div class="container" style="max-width: 1100px;">
+    <h1>User Management</h1>
+    <p>Review and activate registered users to grant them access to the ADHD Diagnosis platform.</p>
+    
+    <div style="overflow-x: auto; margin-top: 30px;">
+        <table style="width: 100%; border-collapse: separate; border-spacing: 0 10px; text-align: left;">
             <thead>
-            <tr>
-                <th scope="col">Sno</th>
-                <th scope="col">Name</th>
-                <th scope="col">Login Id</th>
-                <th scope="col">Mobile</th>
-                <th scope="col">Email</th>
-                <th scope="col">Locality</th>
-                <th scope="col">Status</th>
-                <th scope="col">Activate</th>
-            </tr>
+                <tr style="background: rgba(255,255,255,0.05);">
+                    <th style="padding: 15px; border-radius: 8px 0 0 8px;">No.</th>
+                    <th style="padding: 15px;">Full Name</th>
+                    <th style="padding: 15px;">Login ID</th>
+                    <th style="padding: 15px;">Contact Info</th>
+                    <th style="padding: 15px;">Locality</th>
+                    <th style="padding: 15px;">Status</th>
+                    <th style="padding: 15px; border-radius: 0 8px 8px 0;">Action</th>
+                </tr>
             </thead>
             <tbody>
-            {% for user in data %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ user.name }}</td>
-                <td>{{ user.loginid }}</td>
-                <td>{{ user.mobile }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.locality }}</td>
-                <td>{{ user.status }}</td>
-
-                {% if user.status == 'waiting' %}
-                <td>
-                    <a class="btn-link text-white" href="/AdminActivaUsers/?uid={{ user.id }}"
-                       style="color:DARKBLUE">Activate</a>
-                </td>
-                {% else %}
-                <td> Activated</td>
-                {% endif %}
-            </tr>
-            {% endfor %}
+                {% for user in data %}
+                <tr style="background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);">
+                    <td style="padding: 15px; border-radius: 12px 0 0 12px;">{{ forloop.counter }}</td>
+                    <td style="padding: 15px; font-weight: 500;">{{ user.name }}</td>
+                    <td style="padding: 15px; color: var(--accent-color);">{{ user.loginid }}</td>
+                    <td style="padding: 15px;">
+                        <span style="display: block; font-size: 0.9rem;">{{ user.email }}</span>
+                        <span style="display: block; font-size: 0.8rem; color: var(--text-muted);">{{ user.mobile }}</span>
+                    </td>
+                    <td style="padding: 15px;">{{ user.locality }}</td>
+                    <td style="padding: 15px;">
+                        {% if user.status == 'activated' %}
+                            <span style="background: rgba(34, 197, 94, 0.2); color: #4ade80; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem;">Active</span>
+                        {% else %}
+                            <span style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem;">Waiting</span>
+                        {% endif %}
+                    </td>
+                    <td style="padding: 15px; border-radius: 0 12px 12px 0;">
+                        {% if user.status == 'waiting' %}
+                            <a href="/AdminActivaUsers/?uid={{ user.id }}" class="btn-success" style="padding: 6px 15px; font-size: 0.85rem; text-decoration: none; border-radius: 6px;">Activate Now</a>
+                        {% else %}
+                            <span style="color: var(--text-muted); font-size: 0.85rem;"><i class="fas fa-check-circle"></i> Granted</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" style="padding: 40px; text-align: center; color: var(--text-muted);">No users found in the system.</td>
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
-    </center>
+    </div>
 </div>
 {% endblock %}

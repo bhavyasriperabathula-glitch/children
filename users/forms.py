@@ -3,10 +3,10 @@ from .models import UserRegistrationModel
 
 
 class UserRegistrationForm(forms.ModelForm):
-    name = forms.CharField(widget=forms.TextInput(attrs={'pattern': '[a-zA-Z]+', 'class': 'form-control'}),
+    name = forms.CharField(widget=forms.TextInput(attrs={'pattern': '[a-zA-Z ]+', 'class': 'form-control'}),
                            required=True, max_length=100)
 
-    loginid = forms.CharField(widget=forms.TextInput(attrs={'pattern': '[a-zA-Z]+', 'class': 'form-control'}),
+    loginid = forms.CharField(widget=forms.TextInput(attrs={'pattern': '[a-zA-Z0-9]+', 'class': 'form-control'}),
                               required=True, max_length=100)
 
     password = forms.CharField(

@@ -1,15 +1,22 @@
 {% extends 'users/userbase.html' %}
 {% block content %}
 <div class="container">
-    <h1><i class="fas fa-stethoscope"></i> Make a Prediction</h1>
-    <p>Upload an EEG image below to run the ADHD prediction model.</p>
+    <h1><i class="fas fa-microscope"></i> MRI Diagnosis Prediction</h1>
+    <p>Upload a <b>Brain MRI Scan (Slice)</b> below. The model is trained to recognize <b>Coronal</b>, <b>Sagittal</b>, and <b>Transverse</b> slices.</p>
     
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <label for="image"><i class="fas fa-file-upload"></i> Upload an Image:</label>
+        <label for="image"><i class="fas fa-file-image"></i> Select MRI Slice Image:</label>
         <input type="file" id="image" name="image" accept="image/*" required>
-        <button type="submit"><i class="fas fa-cogs"></i> Analyze Image</button>
+        <button type="submit"><i class="fas fa-brain"></i> Run AI Analysis</button>
     </form>
+
+    {% if error_message %}
+    <div class="alert alert-danger" style="background-color: rgba(220, 53, 69, 0.1); border: 1px solid rgba(220, 53, 69, 0.3); color: #ff6b6b; padding: 20px; border-radius: 12px; margin-top: 30px; text-align: center; backdrop-filter: blur(10px);">
+        <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 10px;"></i>
+        <p style="font-weight: 500;">{{ error_message }}</p>
+    </div>
+    {% endif %}
 
     {% if predicted_class %}
     <div class="result" style="text-align: center; margin-top: 30px;">
