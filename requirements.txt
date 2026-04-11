@@ -4,6 +4,8 @@ numpy<2.0.0
 pillow
 whitenoise
 django-cors-headers
+opencv-python-headless
+tqdm
 
 # ML (OPTIMIZED FOR RENDER LINUX)
 tensorflow==2.15.0.post1
