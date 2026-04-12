@@ -9,6 +9,7 @@ from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from users.models import UserRegistrationModel
+from users.forms import UserRegistrationForm
 
 IMG_SIZE = 48
 
@@ -56,37 +57,22 @@ def is_valid_medical_image(img_path):
 
 def UserRegisterActions(request):
     if request.method == 'POST':
-        name     = request.POST.get('name')
-        loginid  = request.POST.get('loginid')
-        password = request.POST.get('password')
-        mobile   = request.POST.get('mobile')
-        email    = request.POST.get('email')
-        locality = request.POST.get('locality')
-        address  = request.POST.get('address')
-        city     = request.POST.get('city')
-        state    = request.POST.get('state')
-
-        try:
-            user = UserRegistrationModel(
-                name=name,
-                loginid=loginid,
-                password=password,
-                mobile=mobile,
-                email=email,
-                locality=locality,
-                address=address,
-                city=city,
-                state=state,
-                status='waiting',
-            )
-            user.save()
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.status = 'waiting'
+            obj.save()
             messages.success(request, 'Registered successfully. Please wait for admin approval.')
-        except Exception as e:
-            messages.error(request, f'Registration failed: {e}')
+            return redirect('UserRegister')
+        else:
+            # Show each form validation error
+            for field, errors in form.errors.items():
+                for err in errors:
+                    messages.error(request, f'{field}: {err}')
+    else:
+        form = UserRegistrationForm()
 
-        return redirect('UserRegister')
-
-    return render(request, 'UserRegistrations.html')
+    return render(request, 'UserRegistrations.html', {'form': form})
 
 
 # ---------------- LOGIN ----------------
