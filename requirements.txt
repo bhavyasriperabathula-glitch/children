@@ -6,6 +6,8 @@ whitenoise
 django-cors-headers
 opencv-python-headless
 tqdm
+psycopg2-binary
+dj-database-url
 
 # ML (OPTIMIZED FOR RENDER LINUX)
 tensorflow==2.15.0.post1
