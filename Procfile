@@ -1,1 +1,1 @@
-web: python manage.py migrate --noinput && gunicorn ADHD.wsgi
+web: gunicorn ADHD.wsgi
