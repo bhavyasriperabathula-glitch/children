@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-# DB import removed — pages work without database
+from users.models import UserRegistrationModel
 
 
 # -------------------- ADMIN LOGIN --------------------
@@ -26,15 +26,16 @@ def AdminLoginCheck(request):
 
 # -------------------- VIEW USERS --------------------
 def ViewRegisteredUsers(request):
-    # No DB query — return empty list so page loads without any table
-    data = []
+    data = UserRegistrationModel.objects.all()
     return render(request, 'admins/RegisteredUsers.html', {'data': data})
 
 
 # -------------------- ACTIVATE USER --------------------
 def AdminActivaUsers(request):
-    # No DB query — activation skipped, page loads without any table
-    data = []
+    uid = request.GET.get('uid')
+    if uid:
+        UserRegistrationModel.objects.filter(id=uid).update(status='activated')
+    data = UserRegistrationModel.objects.all()
     return render(request, 'admins/RegisteredUsers.html', {'data': data})
 
 

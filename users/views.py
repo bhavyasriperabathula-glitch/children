@@ -8,7 +8,7 @@ import numpy as np
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib import messages
-# DB models removed — pages run without database
+from users.models import UserRegistrationModel
 
 IMG_SIZE = 48
 
@@ -56,8 +56,34 @@ def is_valid_medical_image(img_path):
 
 def UserRegisterActions(request):
     if request.method == 'POST':
-        # No DB — just show success message for demo
-        messages.success(request, 'Registered successfully')
+        name     = request.POST.get('name')
+        loginid  = request.POST.get('loginid')
+        password = request.POST.get('password')
+        mobile   = request.POST.get('mobile')
+        email    = request.POST.get('email')
+        locality = request.POST.get('locality')
+        address  = request.POST.get('address')
+        city     = request.POST.get('city')
+        state    = request.POST.get('state')
+
+        try:
+            user = UserRegistrationModel(
+                name=name,
+                loginid=loginid,
+                password=password,
+                mobile=mobile,
+                email=email,
+                locality=locality,
+                address=address,
+                city=city,
+                state=state,
+                status='waiting',
+            )
+            user.save()
+            messages.success(request, 'Registered successfully. Please wait for admin approval.')
+        except Exception as e:
+            messages.error(request, f'Registration failed: {e}')
+
         return redirect('UserRegister')
 
     return render(request, 'UserRegistrations.html')
@@ -69,12 +95,20 @@ def UserLoginCheck(request):
         loginid = request.POST.get('loginid')
         pswd = request.POST.get('pswd')
 
-        # No DB — simple hardcoded demo login (any credentials accepted)
-        if loginid and pswd:
-            request.session['loggeduser'] = loginid
-            return redirect('UserHome')
-        else:
-            messages.error(request, 'Please enter login details')
+        try:
+            check = UserRegistrationModel.objects.filter(
+                loginid=loginid, password=pswd
+            ).first()
+
+            if check is None:
+                messages.error(request, 'Invalid Login ID or Password')
+            elif check.status == 'waiting':
+                messages.error(request, 'Your account is pending admin approval')
+            else:
+                request.session['loggeduser'] = loginid
+                return redirect('UserHome')
+        except Exception as e:
+            messages.error(request, f'Login error: {e}')
 
     return render(request, 'UserLogin.html')
 
