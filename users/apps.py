@@ -15,7 +15,7 @@ class UsersConfig(AppConfig):
         # Only run migrations in the main process (not during collectstatic or other commands)
         if 'runserver' in sys.argv or 'gunicorn' in sys.argv or 'ADHD.wsgi' in sys.argv:
             try:
-                print("🚀 Auto-initializing database...")
+                print("[INFO] Auto-initializing database...")
                 call_command('migrate', interactive=False)
                 
                 # Double-check custom table
@@ -35,6 +35,6 @@ class UsersConfig(AppConfig):
                             status VARCHAR(100) NOT NULL
                         );
                     """)
-                print("✅ Database initialization complete.")
+                print("[OK] Database initialization complete.")
             except Exception as e:
-                print(f"⚠️ Database init warning: {e}")
+                print(f"[WARN] Database init warning: {e}")
