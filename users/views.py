@@ -8,8 +8,7 @@ import numpy as np
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import UserRegistrationForm
-from .models import UserRegistrationModel
+# DB models removed — pages run without database
 
 IMG_SIZE = 48
 
@@ -57,22 +56,11 @@ def is_valid_medical_image(img_path):
 
 def UserRegisterActions(request):
     if request.method == 'POST':
-        form = UserRegistrationForm(request.POST)
+        # No DB — just show success message for demo
+        messages.success(request, 'Registered successfully')
+        return redirect('UserRegister')
 
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Registered successfully')
-            return redirect('UserRegister')
-        else:
-            # Show specific errors (e.g., email already exists, password too short)
-            for field, errors in form.errors.items():
-                for error in errors:
-                    messages.error(request, f"{field.capitalize()}: {error}")
-
-    else:
-        form = UserRegistrationForm()
-
-    return render(request, 'UserRegistrations.html', {'form': form})
+    return render(request, 'UserRegistrations.html')
 
 
 # ---------------- LOGIN ----------------
@@ -81,17 +69,12 @@ def UserLoginCheck(request):
         loginid = request.POST.get('loginid')
         pswd = request.POST.get('pswd')
 
-        try:
-            user = UserRegistrationModel.objects.get(loginid=loginid, password=pswd)
-
-            if user.status == "activated":
-                request.session['loggeduser'] = user.name
-                return redirect('UserHome')
-            else:
-                messages.error(request, 'Account not activated')
-
-        except UserRegistrationModel.DoesNotExist:
-            messages.error(request, 'Invalid login credentials')
+        # No DB — simple hardcoded demo login (any credentials accepted)
+        if loginid and pswd:
+            request.session['loggeduser'] = loginid
+            return redirect('UserHome')
+        else:
+            messages.error(request, 'Please enter login details')
 
     return render(request, 'UserLogin.html')
 
