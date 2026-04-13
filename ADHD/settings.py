@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # -------------------- SECURITY --------------------
 SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-secret-key')
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -33,8 +33,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'users',
-    'admins',
+    'ADHD.users',
+    'ADHD.admins',
 ]
 
 
