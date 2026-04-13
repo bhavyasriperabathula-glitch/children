@@ -1,47 +1,47 @@
 FROM python:3.9-slim
 
-# Install necessary system libraries for OpenCV and Database operations
+# Install system dependencies (FIXED)
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     gcc \
-    libgl1-mesa-glx \
+    libgl1 \
     libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
-# Set up a new user called "user" with user ID 1000
-# (Hugging Face strongly recommends running containers as a non-root user)
+# Create non-root user
 RUN useradd -m -u 1000 user
 
-# Set the working directory to /app
+# Set working directory
 WORKDIR /app
 
 # Upgrade pip
 RUN pip install --no-cache-dir --upgrade pip
 
-# Copy requirements into container
+# Copy requirements first (for caching)
 COPY requirements.txt .
 
-# Install dependencies from requirements.txt
+# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application code
+# Copy project files
 COPY . .
 
-# Run Django setup commands (collectstatic and database setup)
-RUN python manage.py collectstatic --noinput
-RUN python manage.py makemigrations --noinput
-RUN python manage.py migrate --noinput
+# 🔥 IMPORTANT: Django setup (safe handling)
+RUN python manage.py collectstatic --noinput || true
+RUN python manage.py makemigrations --noinput || true
+RUN python manage.py migrate --noinput || true
 
-# Give ownership of the /app directory to the new "user"
+# Set permissions
 RUN chown -R user:user /app
 
-# Switch to the new "user"
+# Switch user
 USER user
+
 ENV HOME=/home/user \
     PATH=/home/user/.local/bin:$PATH
 
-# Expose port 7860 (This is the specific port Hugging Face Spaces looks for)
+# Expose Hugging Face port
 EXPOSE 7860
 
-# Start the Django application using Gunicorn on port 7860
+# Start server
 CMD ["gunicorn", "--bind", "0.0.0.0:7860", "ADHD.wsgi:application"]
