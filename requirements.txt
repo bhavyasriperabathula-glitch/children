@@ -1,13 +1,20 @@
+# Web Framework
 django==4.2
 gunicorn
-numpy<2.0.0
-pillow
 whitenoise
 django-cors-headers
-opencv-python-headless
-tqdm
-psycopg2-binary
 dj-database-url
 
-# ML (OPTIMIZED FOR RENDER LINUX)
-tensorflow==2.15.0.post1
+# Database
+psycopg2-binary
+
+# Core Libraries
+numpy<2.0.0
+pillow
+tqdm
+
+# Computer Vision
+opencv-python-headless
+
+# Machine Learning (Stable for Linux)
+tensorflow==2.15.0
