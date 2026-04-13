@@ -1,40 +1,46 @@
-from django.apps import AppConfig
-from django.db import connection
-from django.core.management import call_command
-import sys
+import gradio as gr
+import tensorflow as tf
+import numpy as np
+from PIL import Image
 
-class UsersConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'users'
+# Load your trained model
+model = tf.keras.models.load_model("adhd_model.h5")
 
-    def ready(self):
-        """
-        Auto-initialize the entire database if it doesn't exist.
-        This provides a fail-safe for core tables like 'django_session'.
-        """
-        # Only run migrations in the main process (not during collectstatic or other commands)
-        if 'runserver' in sys.argv or 'gunicorn' in sys.argv or 'ADHD.wsgi' in sys.argv:
-            try:
-                print("[INFO] Auto-initializing database...")
-                call_command('migrate', interactive=False)
-                
-                # Double-check custom table
-                with connection.cursor() as cursor:
-                    cursor.execute("""
-                        CREATE TABLE IF NOT EXISTS UserRegistrations (
-                            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                            name VARCHAR(100) NOT NULL,
-                            loginid VARCHAR(100) NOT NULL UNIQUE,
-                            password VARCHAR(100) NOT NULL,
-                            mobile VARCHAR(100) NOT NULL UNIQUE,
-                            email VARCHAR(100) NOT NULL UNIQUE,
-                            locality VARCHAR(100) NOT NULL,
-                            address VARCHAR(1000) NOT NULL,
-                            city VARCHAR(100) NOT NULL,
-                            state VARCHAR(100) NOT NULL,
-                            status VARCHAR(100) NOT NULL
-                        );
-                    """)
-                print("[OK] Database initialization complete.")
-            except Exception as e:
-                print(f"[WARN] Database init warning: {e}")
+# Prediction function
+def predict(image):
+    try:
+        # Resize image (change size if your model uses different input)
+        img = image.resize((224, 224))
+        
+        # Convert to array
+        img = np.array(img)
+        
+        # Normalize
+        img = img / 255.0
+        
+        # Expand dimensions
+        img = np.expand_dims(img, axis=0)
+
+        # Predict
+        prediction = model.predict(img)
+
+        # Output result
+        if prediction[0][0] > 0.5:
+            return "ADHD Detected"
+        else:
+            return "No ADHD Detected"
+
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+# Gradio interface
+interface = gr.Interface(
+    fn=predict,
+    inputs=gr.Image(type="pil"),
+    outputs=gr.Textbox(),
+    title="ADHD Detection System",
+    description="Upload an image to detect ADHD using ML model"
+)
+
+# Run app
+interface.launch()
