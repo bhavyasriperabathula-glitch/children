@@ -1,8 +1,8 @@
 import os
 
 # Suppress TensorFlow GPU/CUDA warnings
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-
+#os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 import cv2
 import numpy as np
 from django.conf import settings
@@ -168,9 +168,9 @@ def prediction(request):
 
         # 🛑 IMAGE VALIDATION LAYER
         if not is_valid_medical_image(temp_path):
-            messages.error(request, "Invalid Image: Only Brain MRI or EEG Spectrogram images are accepted.")
+            messages.error(request, "Invalid Image: Only EEG or Spectrogram images are accepted.")
             return render(request, 'users/prediction.html', {
-                'error_message': "The uploaded image does not appear to be a Brain MRI or EEG Spectrogram. Please upload a valid medical scan."
+                'error_message': "The uploaded image does not appear to be an EEG Scan or Spectrogram. Please upload a valid medical EEG image."
             })
 
         # 🧠 ML INFERENCE
@@ -215,4 +215,4 @@ def training(request):
         'accuracy': '92.5%',
         'val_accuracy': '89.2%'
     }
-    return render(request, 'users/training.html', context)
+    return render(request, 'users/training.html', context)

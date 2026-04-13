@@ -1,18 +1,20 @@
 {% extends 'users/userbase.html' %}
 {% block content %}
 <div class="container">
-    <h1><i class="fas fa-microscope"></i> MRI Diagnosis Prediction</h1>
-    <p>Upload a <b>Brain MRI Scan (Slice)</b> below. The model is trained to recognize <b>Coronal</b>, <b>Sagittal</b>, and <b>Transverse</b> slices.</p>
-    
+    <h1><i class="fas fa-microscope"></i> EEG Diagnosis Prediction</h1>
+    <p>Upload an <b>EEG Scan or Spectrogram</b> image below. The model uses a to detect patterns corresponding to ADHD.
+    </p>
+
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <label for="image"><i class="fas fa-file-image"></i> Select MRI Slice Image:</label>
+        <label for="image"><i class="fas fa-file-image"></i> Select EEG Image:</label>
         <input type="file" id="image" name="image" accept="image/*" required>
         <button type="submit"><i class="fas fa-brain"></i> Run AI Analysis</button>
     </form>
 
     {% if error_message %}
-    <div class="alert alert-danger" style="background-color: rgba(220, 53, 69, 0.1); border: 1px solid rgba(220, 53, 69, 0.3); color: #ff6b6b; padding: 20px; border-radius: 12px; margin-top: 30px; text-align: center; backdrop-filter: blur(10px);">
+    <div class="alert alert-danger"
+        style="background-color: rgba(220, 53, 69, 0.1); border: 1px solid rgba(220, 53, 69, 0.3); color: #ff6b6b; padding: 20px; border-radius: 12px; margin-top: 30px; text-align: center; backdrop-filter: blur(10px);">
         <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 10px;"></i>
         <p style="font-weight: 500;">{{ error_message }}</p>
     </div>
@@ -20,10 +22,12 @@
 
     {% if predicted_class %}
     <div class="result" style="text-align: center; margin-top: 30px;">
-        <h2 style="color: #4CAF50;">Prediction Result: <span style="font-weight: bold;">{{ predicted_class }}</span></h2>
-        
+        <h2 style="color: #4CAF50;">Prediction Result: <span style="font-weight: bold;">{{ predicted_class }}</span>
+        </h2>
+
         {% if warning %}
-        <div class="alert alert-info" style="background-color: #d1ecf1; border-color: #bee5eb; color: #0c5460; padding: 10px; border-radius: 5px; margin: 15px 0; display: inline-block;">
+        <div class="alert alert-info"
+            style="background-color: #d1ecf1; border-color: #bee5eb; color: #0c5460; padding: 10px; border-radius: 5px; margin: 15px 0; display: inline-block;">
             <i class="fas fa-info-circle"></i> {{ warning }}
         </div>
         {% endif %}
@@ -32,7 +36,8 @@
         {% if image_url %}
         <div style="margin-top: 25px;">
             <h3><i class="fas fa-image"></i> Analyzed Image:</h3>
-            <img src="{{ image_url }}" alt="Uploaded Image" style="max-width: 100%; max-height: 400px; border-radius: var(--card-radius); box-shadow: 0 10px 30px rgba(0,0,0,0.5); object-fit: contain;">
+            <img src="{{ image_url }}" alt="Uploaded Image"
+                style="max-width: 100%; max-height: 400px; border-radius: var(--card-radius); box-shadow: 0 10px 30px rgba(0,0,0,0.5); object-fit: contain;">
         </div>
         {% endif %}
     </div>
