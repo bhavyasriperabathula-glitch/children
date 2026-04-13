@@ -14,7 +14,7 @@ pillow
 tqdm
 
 # Computer Vision
-opencv-python-headless
+opencv-python
 
 # Machine Learning (Stable for Linux)
 tensorflow==2.15.0
