@@ -16,4 +16,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 7860
 
-CMD ["gunicorn", "--bind", "0.0.0.0:7860", "adhd-django-app.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:7860", "adhd_django_app.wsgi:application"]
